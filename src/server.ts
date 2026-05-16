@@ -1,27 +1,26 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-// zod is used for tool input schemas in M2+; import is deferred until then.
+import { BeaconedClient } from '@joshre/beaconed-api-client';
+import { registerAllTools } from './tools/index.js';
+import { registerAllResources } from './resources/index.js';
 
 const SERVER_NAME = 'beaconed-mcp';
 const SERVER_VERSION = '0.0.1';
 
-export function createServer(): McpServer {
+export function createServer(client: BeaconedClient): McpServer {
   const server = new McpServer(
     { name: SERVER_NAME, version: SERVER_VERSION },
     {
       capabilities: {
         tools: {},
+        resources: {},
       },
     },
   );
 
-  // Placeholder tool — proves the transport wiring. Real tools land in M2.
-  server.tool('beaconed_health', 'Returns ok: true to confirm the server is running.', {}, async () => {
-    return {
-      content: [{ type: 'text', text: JSON.stringify({ ok: true }) }],
-    };
-  });
+  registerAllTools(server, client);
+  registerAllResources(server, client);
 
   return server;
 }
@@ -31,10 +30,16 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
   const apiKey = process.env['BEACONED_API_KEY'];
   if (!apiKey) {
     process.stderr.write('BEACONED_API_KEY environment variable is required\n');
-    process.exit(1);
+    process.exit(2);
   }
 
-  const server = createServer();
+  const client = new BeaconedClient({
+    apiKey,
+    baseUrl: process.env['BEACONED_BASE_URL'] ?? 'https://beaconed.ai',
+    userAgent: 'beaconed-mcp/0.0.1',
+  });
+
+  const server = createServer(client);
   const transport = new StdioServerTransport();
   server.connect(transport).catch((err: unknown) => {
     process.stderr.write(`Failed to start server: ${String(err)}\n`);
