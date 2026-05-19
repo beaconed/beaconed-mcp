@@ -8,6 +8,7 @@ import { registerWebhookTools } from './webhooks.js';
 import { registerProductMutationTools } from './products-mutations.js';
 import { registerOptimizationMutationTools } from './optimizations-mutations.js';
 import { registerWebhookMutationTools } from './webhooks-mutations.js';
+import { registerBulkOptimizationTools } from './bulk-optimizations.js';
 
 export function registerAllTools(server: McpServer, client: BeaconedClient): void {
   // Read tools
@@ -20,4 +21,5 @@ export function registerAllTools(server: McpServer, client: BeaconedClient): voi
   registerProductMutationTools(server, client);
   registerOptimizationMutationTools(server, client);
   registerWebhookMutationTools(server, client);
+  registerBulkOptimizationTools(server, client);
 }
