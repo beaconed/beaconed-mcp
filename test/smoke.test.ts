@@ -1,10 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
-import { BeaconedClient } from '@joshre/beaconed-api-client';
+import { BeaconedClient } from '@beaconed/api-client';
 import {
   BeaconedNotFoundError,
   BeaconedAuthError,
   BeaconedRateLimitError,
-} from '@joshre/beaconed-api-client';
+} from '@beaconed/api-client';
 import { createServer } from '../src/server.js';
 
 // ---------------------------------------------------------------------------

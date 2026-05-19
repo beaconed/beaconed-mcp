@@ -8,7 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@joshre/beaconed-api-client':
+      '@beaconed/api-client':
         specifier: file:../beaconed-api-client
         version: file:../beaconed-api-client
       '@modelcontextprotocol/sdk':
@@ -44,6 +44,10 @@ importers:
         version: 2.1.9(@types/node@20.19.41)
 
 packages:
+
+  '@beaconed/api-client@file:../beaconed-api-client':
+    resolution: {directory: ../beaconed-api-client, type: directory}
+    engines: {node: '>=20'}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -402,10 +406,6 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
-
-  '@joshre/beaconed-api-client@file:../beaconed-api-client':
-    resolution: {directory: ../beaconed-api-client, type: directory}
-    engines: {node: '>=20'}
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
@@ -1508,6 +1508,8 @@ packages:
 
 snapshots:
 
+  '@beaconed/api-client@file:../beaconed-api-client': {}
+
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
 
@@ -1720,8 +1722,6 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
-
-  '@joshre/beaconed-api-client@file:../beaconed-api-client': {}
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 

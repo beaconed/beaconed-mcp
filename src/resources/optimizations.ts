@@ -1,6 +1,6 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { BeaconedClient } from '@joshre/beaconed-api-client';
+import type { BeaconedClient } from '@beaconed/api-client';
 
 const MIME_TYPE = 'application/json';
 

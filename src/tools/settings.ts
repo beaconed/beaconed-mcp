@@ -1,5 +1,5 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { BeaconedClient } from '@joshre/beaconed-api-client';
+import type { BeaconedClient } from '@beaconed/api-client';
 import { formatError } from '../error-utils.js';
 
 export function registerSettingsTools(server: McpServer, client: BeaconedClient): void {

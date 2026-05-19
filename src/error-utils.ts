@@ -7,7 +7,7 @@ import {
   BeaconedServerError,
   BeaconedNetworkError,
   BeaconedValidationError,
-} from '@joshre/beaconed-api-client';
+} from '@beaconed/api-client';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 
 function describeError(err: BeaconedError, toolName: string): string {

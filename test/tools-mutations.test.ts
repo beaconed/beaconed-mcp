@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { BeaconedClient } from '@joshre/beaconed-api-client';
-import { BeaconedValidationError } from '@joshre/beaconed-api-client';
+import { BeaconedClient } from '@beaconed/api-client';
+import { BeaconedValidationError } from '@beaconed/api-client';
 import { createServer } from '../src/server.js';
 
 // ---------------------------------------------------------------------------

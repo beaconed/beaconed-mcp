@@ -1,4 +1,4 @@
-import { BeaconedClient } from '@joshre/beaconed-api-client';
+import { BeaconedClient } from '@beaconed/api-client';
 
 export function createClient(): BeaconedClient {
   const apiKey = process.env['BEACONED_API_KEY'];

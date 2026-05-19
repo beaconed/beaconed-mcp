@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.1] - 2026-05-19
+
 ### Added
 
-- Initial scaffold for MCP server with StdioServerTransport
-- Placeholder `beaconed_health` tool to verify wiring
-- CI workflow for Node 20
+- Initial release.
+- MCP server exposing Beaconed v1 API to Claude and other MCP clients.

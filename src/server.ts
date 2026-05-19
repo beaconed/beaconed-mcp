@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { BeaconedClient } from '@joshre/beaconed-api-client';
+import { BeaconedClient } from '@beaconed/api-client';
 import { registerAllTools } from './tools/index.js';
 import { registerAllResources } from './resources/index.js';
 
