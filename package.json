@@ -1,13 +1,27 @@
 {
   "name": "@beaconed/mcp",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "MCP server for the Beaconed v1 API",
-  "keywords": ["beaconed", "mcp", "model-context-protocol", "claude", "ai", "ecommerce", "shopify", "seo"],
+  "keywords": [
+    "beaconed",
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "ai",
+    "ecommerce",
+    "shopify",
+    "seo"
+  ],
   "author": "Beaconed, Inc.",
   "license": "MIT",
   "homepage": "https://github.com/beaconed/beaconed-mcp#readme",
-  "repository": { "type": "git", "url": "git+https://github.com/beaconed/beaconed-mcp.git" },
-  "bugs": { "url": "https://github.com/beaconed/beaconed-mcp/issues" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beaconed/beaconed-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/beaconed/beaconed-mcp/issues"
+  },
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -20,7 +34,9 @@
     "README.md",
     "LICENSE"
   ],
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
