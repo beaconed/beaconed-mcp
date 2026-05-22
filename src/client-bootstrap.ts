@@ -10,6 +10,7 @@ export function createClient(): BeaconedClient {
   return new BeaconedClient({
     apiKey,
     baseUrl: process.env['BEACONED_BASE_URL'] ?? 'https://beaconed.ai',
-    userAgent: 'beaconed-mcp/0.0.1',
+    userAgent: 'beaconed-mcp/0.0.3',
+    clientId: 'beaconed-mcp',
   });
 }

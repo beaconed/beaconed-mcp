@@ -1,6 +1,6 @@
 {
   "name": "@beaconed/mcp",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "MCP server for the Beaconed v1 API",
   "keywords": [
     "beaconed",
@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.29.0",
-    "@beaconed/api-client": "^0.0.1",
+    "@beaconed/api-client": "^0.0.2",
     "zod": "^3.0.0"
   },
   "devDependencies": {

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@beaconed/api-client':
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.2
+        version: 0.0.2
       '@modelcontextprotocol/sdk':
         specifier: 1.29.0
         version: 1.29.0(zod@3.25.76)
@@ -45,8 +45,8 @@ importers:
 
 packages:
 
-  '@beaconed/api-client@0.0.1':
-    resolution: {integrity: sha512-p0WLFsnG20ErtIYTBedyxjSXH/GNgKfraz7WEEdkxdnuyDlxUXKLUGaXYfyY6DXLv9Vr2pbTfYTSkEY2dw2R+Q==}
+  '@beaconed/api-client@0.0.2':
+    resolution: {integrity: sha512-rijm4bSJKjUoWrLZ3fulZLIGmIedO+9vrThRa/vBgcbOjqtlYVeP/hz9Fdt6eIBAJ5LYcLmzRQ6fOJSezbYrMw==}
     engines: {node: '>=20'}
 
   '@esbuild/aix-ppc64@0.21.5':
@@ -1508,7 +1508,7 @@ packages:
 
 snapshots:
 
-  '@beaconed/api-client@0.0.1': {}
+  '@beaconed/api-client@0.0.2': {}
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
