@@ -13,7 +13,7 @@
     "node": ">=20"
   },
   "bin": {
-    "beaconed-mcp": "./dist/server.js"
+    "beaconed-mcp": "./dist/bin.js"
   },
   "files": [
     "dist/**",
@@ -29,7 +29,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "dev": "tsx src/server.ts"
+    "dev": "tsx src/bin.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.29.0",
