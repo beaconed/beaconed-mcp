@@ -22,6 +22,9 @@ jobs:
         with:
           version: 9
 
+      - name: Install Redis for integration tests
+        run: sudo apt-get update && sudo apt-get install -y redis-server
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 

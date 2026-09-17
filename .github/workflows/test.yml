@@ -15,6 +15,8 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+      - name: Install Redis for integration tests
+        run: sudo apt-get update && sudo apt-get install -y redis-server
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
       - run: pnpm exec vitest run
