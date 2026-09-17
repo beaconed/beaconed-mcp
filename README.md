@@ -73,6 +73,8 @@ Tool annotations describe read-only, replacement, repeat-call, and external-syst
 
 Hosted deployments must rate-limit `POST /register` at a trusted edge using the verified client address. The Node service deliberately ignores forwarded client-address headers because accepting them without an authenticated proxy boundary would let callers spoof the rate-limit identity.
 
+The production container and required settings are documented in [docs/deployment.md](docs/deployment.md).
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
