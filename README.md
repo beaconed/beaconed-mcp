@@ -2,6 +2,8 @@
 
 MCP server exposing the Beaconed v1 API to Claude Desktop, Cursor, and any MCP-compatible client. Ask Claude to list your products, queue optimizations, approve AI-generated copy, and manage webhooks — all via natural language.
 
+Requires Node.js 22 or later.
+
 ## Install
 
 ```bash
@@ -68,6 +70,8 @@ This package uses stdio and requires Node.js 20+. Tools operate on the account a
 Optimization uses account credits; the request limit above is a rate limit, not a price. Queue acceptance does not confirm completion. Read product or optimization details to check the result. Approval can publish immediately or queue a Shopify write when `auto_push_on_approve` is enabled; inspect account settings and the proposed content before approving. Applying or reverting can replace live content.
 
 Tool annotations describe read-only, replacement, repeat-call, and external-system effects. Clients may use these hints when asking for confirmation; the annotations do not enforce confirmation.
+
+Hosted deployments must rate-limit `POST /register` at a trusted edge using the verified client address. The Node service deliberately ignores forwarded client-address headers because accepting them without an authenticated proxy boundary would let callers spoof the rate-limit identity.
 
 ## License
 
