@@ -8,7 +8,7 @@ import { registerAllTools } from './tools/index.js';
 import { registerAllResources } from './resources/index.js';
 
 const SERVER_NAME = 'beaconed-mcp';
-const SERVER_VERSION = '0.0.3';
+const SERVER_VERSION = '0.0.4';
 
 export function createServer(client: BeaconedClient): McpServer {
   const server = new McpServer(
@@ -58,7 +58,7 @@ if (isEntryPoint(process.argv[1], import.meta.url)) {
   const client = new BeaconedClient({
     apiKey,
     baseUrl: process.env['BEACONED_BASE_URL'] ?? 'https://beaconed.ai',
-    userAgent: 'beaconed-mcp/0.0.3',
+    userAgent: 'beaconed-mcp/0.0.4',
     clientId: 'beaconed-mcp',
   });
 

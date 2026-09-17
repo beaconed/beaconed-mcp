@@ -1,3 +1,5 @@
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { describe, it, expect, vi } from 'vitest';
 import { BeaconedClient } from '@beaconed/api-client';
 import {
@@ -369,5 +371,35 @@ describe('beaconed://optimizations resource', () => {
     const contents = (result as { contents: Array<{ text: string }> }).contents;
     const parsed = JSON.parse(contents[0].text);
     expect(parsed.data[0].id).toBe('opt-1');
+  });
+});
+
+
+describe('tool discovery effects', () => {
+  it('preserves all 26 tools and exposes complete effect annotations', async () => {
+    const server = createServer(makeClient());
+    const client = new Client({ name: 'metadata-test', version: '1.0.0' });
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    await server.connect(serverTransport);
+    await client.connect(clientTransport);
+    try {
+      const { tools } = await client.listTools();
+      expect(tools).toHaveLength(26);
+      expect(tools.filter((tool) => tool.annotations?.readOnlyHint)).toHaveLength(12);
+      for (const tool of tools) {
+        expect(typeof tool.annotations?.readOnlyHint).toBe('boolean');
+        expect(typeof tool.annotations?.destructiveHint).toBe('boolean');
+        expect(typeof tool.annotations?.idempotentHint).toBe('boolean');
+        expect(tool.annotations?.openWorldHint).toBe(true);
+      }
+      const approve = tools.find((tool) => tool.name === 'beaconed_optimizations_approve');
+      expect(approve?.description).toMatch(/auto.push/);
+      expect(approve?.annotations?.destructiveHint).toBe(true);
+      expect(tools.find((tool) => tool.name === 'beaconed_products_sync')?.description).toMatch(/all products/);
+      expect(tools.find((tool) => tool.name === 'beaconed_products_optimize')?.description).toMatch(/credits/);
+    } finally {
+      await client.close();
+      await server.close();
+    }
   });
 });

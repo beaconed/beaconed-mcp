@@ -38,6 +38,7 @@ export function registerProductTools(server: McpServer, client: BeaconedClient):
       needs_optimization: z.boolean().optional().describe('Only return products with pending optimizations'),
       q: z.string().optional().describe('Search by product title'),
     },
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async (params) => {
       try {
         const result = await client.products.list(params);
@@ -55,6 +56,7 @@ export function registerProductTools(server: McpServer, client: BeaconedClient):
     {
       id: z.string().describe('Product UUID'),
     },
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async ({ id }) => {
       try {
         const product = await client.products.get(id);
@@ -76,6 +78,7 @@ export function registerProductTools(server: McpServer, client: BeaconedClient):
       until: z.string().optional().describe('ISO 8601 date — only scores on or before this date'),
       grade: z.string().optional().describe('Filter by grade (excellent, good, fair, poor, critical)'),
     },
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async ({ id, ...params }) => {
       try {
         const result = await client.products.scores(id, params);
@@ -99,6 +102,7 @@ export function registerProductTools(server: McpServer, client: BeaconedClient):
         .describe('Filter by optimization status'),
       field: fieldSchema.describe('Filter by the product field being optimized'),
     },
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async ({ id, ...params }) => {
       try {
         const result = await client.products.optimizations(id, params);

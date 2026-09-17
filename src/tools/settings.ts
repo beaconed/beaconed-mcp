@@ -8,6 +8,7 @@ export function registerSettingsTools(server: McpServer, client: BeaconedClient)
     'beaconed_settings_get',
     'GET /api/v1/settings — fetch the account optimization settings including brand voice, required/excluded keywords, and auto-push configuration',
     {},
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async () => {
       try {
         const settings = await client.settings.get();

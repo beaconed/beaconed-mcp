@@ -22,7 +22,7 @@ export function registerWebhookMutationTools(server: McpServer, client: Beaconed
       url: z.string().url().describe('HTTPS URL to receive webhook deliveries'),
       events: z.array(webhookEventEnum).min(1).describe('Events to subscribe to'),
     },
-    { destructiveHint: false, idempotentHint: false },
+    { readOnlyHint: false, openWorldHint: true, destructiveHint: false, idempotentHint: false },
     async ({ url, events }) => {
       try {
         const result = await client.webhooks.create({ url, events });
@@ -50,7 +50,7 @@ export function registerWebhookMutationTools(server: McpServer, client: Beaconed
       events: z.array(z.string()).optional().describe('New list of subscribed events'),
       status: z.enum(['active', 'paused']).optional().describe('Set to paused to temporarily disable deliveries'),
     },
-    { destructiveHint: false, idempotentHint: true },
+    { readOnlyHint: false, openWorldHint: true, destructiveHint: true, idempotentHint: true },
     async ({ id, ...input }) => {
       try {
         const result = await client.webhooks.update(id, input);
@@ -68,7 +68,7 @@ export function registerWebhookMutationTools(server: McpServer, client: Beaconed
     {
       id: z.string().describe('Webhook UUID'),
     },
-    { destructiveHint: true, idempotentHint: true },
+    { readOnlyHint: false, openWorldHint: true, destructiveHint: true, idempotentHint: true },
     async ({ id }) => {
       try {
         await client.webhooks.delete(id);
@@ -86,7 +86,7 @@ export function registerWebhookMutationTools(server: McpServer, client: Beaconed
     {
       id: z.string().describe('Webhook UUID'),
     },
-    { destructiveHint: false, idempotentHint: false },
+    { readOnlyHint: false, openWorldHint: true, destructiveHint: false, idempotentHint: false },
     async ({ id }) => {
       try {
         const result = await client.webhooks.test(id);
