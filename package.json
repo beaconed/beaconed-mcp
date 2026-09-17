@@ -24,7 +24,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "bin": {
     "beaconed-mcp": "./dist/server.js"
@@ -48,12 +48,15 @@
     "dev": "tsx src/server.ts"
   },
   "dependencies": {
+    "@beaconed/api-client": "github:beaconed/beaconed-api-client#43439ae7d80770ba6ce9fc85f78f1242fa7311dd",
     "@modelcontextprotocol/sdk": "1.29.0",
-    "@beaconed/api-client": "^0.0.2",
+    "oidc-provider": "9.12.2",
+    "redis": "6.2.1",
     "zod": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^22.0.0",
+    "@types/oidc-provider": "9.12.1",
     "@typescript-eslint/eslint-plugin": "8.18.2",
     "@typescript-eslint/parser": "8.18.2",
     "eslint": "^9.0.0",

@@ -16,11 +16,14 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+
+      - name: Install Redis for integration tests
+        run: sudo apt-get update && sudo apt-get install -y redis-server
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
