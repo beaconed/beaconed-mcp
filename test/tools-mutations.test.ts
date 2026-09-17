@@ -440,17 +440,17 @@ describe('destructive/idempotent annotations', () => {
     expect(ann.idempotentHint).toBe(false);
   });
 
-  it('products update has destructiveHint:false and idempotentHint:true', () => {
+  it('products update has destructiveHint:true and idempotentHint:true', () => {
     const server = createServer(makeClient());
     const ann = getAnnotations(server, 'beaconed_products_update');
-    expect(ann.destructiveHint).toBe(false);
+    expect(ann.destructiveHint).toBe(true);
     expect(ann.idempotentHint).toBe(true);
   });
 
-  it('optimizations approve has destructiveHint:false and idempotentHint:true', () => {
+  it('optimizations approve has destructiveHint:true and idempotentHint:true', () => {
     const server = createServer(makeClient());
     const ann = getAnnotations(server, 'beaconed_optimizations_approve');
-    expect(ann.destructiveHint).toBe(false);
+    expect(ann.destructiveHint).toBe(true);
     expect(ann.idempotentHint).toBe(true);
   });
 

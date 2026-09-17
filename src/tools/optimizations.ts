@@ -40,6 +40,7 @@ export function registerOptimizationTools(server: McpServer, client: BeaconedCli
       product_id: z.string().optional().describe('Filter to a specific product UUID'),
       since: z.string().optional().describe('ISO 8601 date — only optimizations created on or after this date'),
     },
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async (params) => {
       try {
         const result = await client.optimizations.list(params);
@@ -57,6 +58,7 @@ export function registerOptimizationTools(server: McpServer, client: BeaconedCli
     {
       id: z.string().describe('Optimization UUID'),
     },
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async ({ id }) => {
       try {
         const optimization = await client.optimizations.get(id);

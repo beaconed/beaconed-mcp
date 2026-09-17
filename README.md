@@ -50,21 +50,29 @@ Set `BEACONED_BASE_URL` to override the default `https://beaconed.ai` (useful fo
 
 - `beaconed_products_create` — create a product from external (non-Shopify) data
 - `beaconed_products_update` — update product fields (partial update)
-- `beaconed_products_sync` — trigger a Shopify sync for a product (EXPENSIVE: 10 req/min)
-- `beaconed_products_optimize` — queue AI optimization for one or more product fields (EXPENSIVE: 10 req/min)
-- `beaconed_products_calculate_score` — recalculate readiness score for a product (EXPENSIVE: 10 req/min)
-- `beaconed_optimizations_approve` — approve a pending optimization (EXPENSIVE: 10 req/min)
+- `beaconed_products_sync` — refresh all products in the selected product’s shop from Shopify (rate limit: 10 requests/min)
+- `beaconed_products_optimize` — queue AI optimization for one or more product fields (rate limit: 10 requests/min)
+- `beaconed_products_calculate_score` — recalculate readiness score for a product (rate limit: 10 requests/min)
+- `beaconed_optimizations_approve` — approve a pending optimization; can publish live content when auto-push is enabled (rate limit: 10 requests/min)
 - `beaconed_optimizations_reject` — reject a pending optimization with an optional reason
-- `beaconed_optimizations_apply` — apply an approved optimization to the live product (DESTRUCTIVE, EXPENSIVE: 10 req/min)
-- `beaconed_optimizations_revert` — revert an applied optimization to original content (DESTRUCTIVE, EXPENSIVE: 10 req/min)
+- `beaconed_optimizations_apply` — request application of an approved optimization to the live product (DESTRUCTIVE, rate limit: 10 requests/min)
+- `beaconed_optimizations_revert` — request reversion of an applied optimization to original content (DESTRUCTIVE, rate limit: 10 requests/min)
 - `beaconed_webhooks_create` — create a webhook subscription (signing secret returned once only)
 - `beaconed_webhooks_update` — update a webhook URL, events, or status
 - `beaconed_webhooks_delete` — permanently remove a webhook subscription (DESTRUCTIVE)
 - `beaconed_webhooks_test` — send a test event to verify delivery
-- `beaconed_bulk_optimize` — queue AI optimization for multiple products in one request (EXPENSIVE: 10 req/min)
+- `beaconed_bulk_optimize` — queue AI optimization for multiple products in one request (rate limit: 10 requests/min)
 
-DESTRUCTIVE tools are annotated with `destructiveHint: true` — compliant MCP clients will prompt for confirmation before invoking them.
+This package uses stdio and requires Node.js 20+. Tools operate on the account associated with `BEACONED_API_KEY`.
+
+Optimization uses account credits; the request limit above is a rate limit, not a price. Queue acceptance does not confirm completion. Read product or optimization details to check the result. Approval can publish immediately or queue a Shopify write when `auto_push_on_approve` is enabled; inspect account settings and the proposed content before approving. Applying or reverting can replace live content.
+
+Tool annotations describe read-only, replacement, repeat-call, and external-system effects. Clients may use these hints when asking for confirmation; the annotations do not enforce confirmation.
 
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## Registry publishing
+
+`server.json` describes the stdio npm package. Its name matches `mcpName` in `package.json`; both versions must match the release being submitted. Publish and verify that exact npm version before running `mcp-publisher publish`. Registry acceptance and directory approval are separate from an npm release.

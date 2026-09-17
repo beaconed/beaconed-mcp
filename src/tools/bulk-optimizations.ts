@@ -19,7 +19,7 @@ export function registerBulkOptimizationTools(server: McpServer, client: Beacone
   // beaconed_bulk_optimize
   server.tool(
     'beaconed_bulk_optimize',
-    'POST /api/v1/bulk_optimizations — queue AI optimization for multiple products in one request (queued, 202). EXPENSIVE: 10 req/min limit.',
+    'POST /api/v1/bulk_optimizations — queue AI optimization for multiple products using account credits (queued, 202). Rate limit: 10 requests/min.',
     {
       product_ids: z
         .array(z.string())
@@ -30,7 +30,7 @@ export function registerBulkOptimizationTools(server: McpServer, client: Beacone
         .optional()
         .describe('Fields to optimize. Omit to optimize all default fields.'),
     },
-    { destructiveHint: false, idempotentHint: false },
+    { readOnlyHint: false, openWorldHint: true, destructiveHint: false, idempotentHint: false },
     async ({ product_ids, fields }) => {
       try {
         const input = fields !== undefined ? { product_ids, fields } : { product_ids };

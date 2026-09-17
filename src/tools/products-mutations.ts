@@ -47,7 +47,7 @@ export function registerProductMutationTools(server: McpServer, client: Beaconed
     'beaconed_products_create',
     'POST /api/v1/products — create a product from external (non-Shopify) data. Use external_id for idempotency.',
     productInputSchema,
-    { destructiveHint: false, idempotentHint: false },
+    { readOnlyHint: false, openWorldHint: true, destructiveHint: false, idempotentHint: false },
     async (params) => {
       try {
         const result = await client.products.create(params);
@@ -66,7 +66,7 @@ export function registerProductMutationTools(server: McpServer, client: Beaconed
       id: z.string().describe('Product UUID'),
       ...productInputSchema,
     },
-    { destructiveHint: false, idempotentHint: true },
+    { readOnlyHint: false, openWorldHint: true, destructiveHint: true, idempotentHint: true },
     async ({ id, ...input }) => {
       try {
         const result = await client.products.update(id, input);
@@ -80,11 +80,11 @@ export function registerProductMutationTools(server: McpServer, client: Beaconed
   // beaconed_products_sync
   server.tool(
     'beaconed_products_sync',
-    'POST /api/v1/products/{id}/sync — trigger a Shopify sync for the product (queued, 202). EXPENSIVE: 10 req/min limit.',
+    'POST /api/v1/products/{id}/sync — refresh all products in the selected product\'s shop from Shopify (queued, 202). Rate limit: 10 requests/min.',
     {
       id: z.string().describe('Product UUID'),
     },
-    { destructiveHint: false, idempotentHint: true },
+    { readOnlyHint: false, openWorldHint: true, destructiveHint: true, idempotentHint: true },
     async ({ id }) => {
       try {
         const result = await client.products.sync(id);
@@ -98,7 +98,7 @@ export function registerProductMutationTools(server: McpServer, client: Beaconed
   // beaconed_products_optimize
   server.tool(
     'beaconed_products_optimize',
-    'POST /api/v1/products/{id}/optimization — queue AI optimization for one or more product fields (queued, 202). EXPENSIVE: 10 req/min limit.',
+    'POST /api/v1/products/{id}/optimization — queue AI optimization for one or more product fields using account credits (queued, 202). Rate limit: 10 requests/min.',
     {
       id: z.string().describe('Product UUID'),
       fields: z
@@ -106,7 +106,7 @@ export function registerProductMutationTools(server: McpServer, client: Beaconed
         .optional()
         .describe('Fields to optimize. Omit to optimize all default fields.'),
     },
-    { destructiveHint: false, idempotentHint: false },
+    { readOnlyHint: false, openWorldHint: true, destructiveHint: false, idempotentHint: false },
     async ({ id, fields }) => {
       try {
         const input = fields !== undefined ? { fields } : undefined;
@@ -121,11 +121,11 @@ export function registerProductMutationTools(server: McpServer, client: Beaconed
   // beaconed_products_calculate_score
   server.tool(
     'beaconed_products_calculate_score',
-    'POST /api/v1/products/{id}/scores/calculation — recalculate the readiness score for a product. EXPENSIVE: 10 req/min limit.',
+    'POST /api/v1/products/{id}/scores/calculation — recalculate the readiness score for a product. Rate limit: 10 requests/min.',
     {
       id: z.string().describe('Product UUID'),
     },
-    { destructiveHint: false, idempotentHint: true },
+    { readOnlyHint: false, openWorldHint: true, destructiveHint: false, idempotentHint: true },
     async ({ id }) => {
       try {
         const result = await client.products.calculateScore(id);

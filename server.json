@@ -1,0 +1,29 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.beaconed/beaconed-mcp",
+  "description": "Manage Beaconed products, readiness scores, AI optimizations, and webhooks.",
+  "repository": {
+    "url": "https://github.com/beaconed/beaconed-mcp",
+    "source": "github"
+  },
+  "version": "0.0.4",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@beaconed/mcp",
+      "version": "0.0.4",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "BEACONED_API_KEY",
+          "description": "Your Beaconed API key",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

@@ -24,6 +24,7 @@ export function registerScoreTools(server: McpServer, client: BeaconedClient): v
     'beaconed_scores_list',
     'GET /api/v1/scores — list readiness scores across all products (SPEC-ABSENT endpoint; verify availability with API team)',
     scoreFilters,
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async (params) => {
       try {
         const result = await client.scores.list(params);
@@ -39,6 +40,7 @@ export function registerScoreTools(server: McpServer, client: BeaconedClient): v
     'beaconed_scores_latest',
     'GET /api/v1/scores/latest — fetch the latest score for each product (SPEC-ABSENT endpoint; verify availability with API team)',
     scoreFilters,
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async (params) => {
       try {
         const result = await client.scores.latest(params);

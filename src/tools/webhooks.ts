@@ -14,6 +14,7 @@ export function registerWebhookTools(server: McpServer, client: BeaconedClient):
     'beaconed_webhooks_list',
     'GET /api/v1/webhooks — list webhook subscriptions registered for the current API key',
     paginationSchema,
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async (params) => {
       try {
         const result = await client.webhooks.list(params);
@@ -31,6 +32,7 @@ export function registerWebhookTools(server: McpServer, client: BeaconedClient):
     {
       id: z.string().describe('Webhook UUID'),
     },
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async ({ id }) => {
       try {
         const webhook = await client.webhooks.get(id);
@@ -46,6 +48,7 @@ export function registerWebhookTools(server: McpServer, client: BeaconedClient):
     'beaconed_webhooks_events',
     'GET /api/v1/webhooks/events — fetch the global catalog of all available webhook event types',
     paginationSchema,
+    { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async (params) => {
       try {
         const result = await client.webhooks.events(undefined, params);
