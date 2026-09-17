@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { BeaconedClient } from '@beaconed/api-client';
 import { formatError } from '../error-utils.js';
+import { registerTool } from './register-tool.js';
 
 const fieldEnum = z.enum([
   'title',
@@ -17,7 +18,8 @@ const fieldEnum = z.enum([
 
 export function registerBulkOptimizationTools(server: McpServer, client: BeaconedClient): void {
   // beaconed_bulk_optimize
-  server.tool(
+  registerTool(
+    server,
     'beaconed_bulk_optimize',
     'POST /api/v1/bulk_optimizations — queue AI optimization for multiple products using account credits (queued, 202). Rate limit: 10 requests/min.',
     {

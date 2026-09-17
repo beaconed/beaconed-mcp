@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { BeaconedClient } from '@beaconed/api-client';
 import { formatError } from '../error-utils.js';
+import { registerTool } from './register-tool.js';
 
 const paginationSchema = {
   page: z.number().int().positive().optional().describe('Page number (1-based)'),
@@ -10,7 +11,8 @@ const paginationSchema = {
 
 export function registerWebhookTools(server: McpServer, client: BeaconedClient): void {
   // beaconed_webhooks_list
-  server.tool(
+  registerTool(
+    server,
     'beaconed_webhooks_list',
     'GET /api/v1/webhooks — list webhook subscriptions registered for the current API key',
     paginationSchema,
@@ -26,7 +28,8 @@ export function registerWebhookTools(server: McpServer, client: BeaconedClient):
   );
 
   // beaconed_webhooks_get
-  server.tool(
+  registerTool(
+    server,
     'beaconed_webhooks_get',
     'GET /api/v1/webhooks/{id} — fetch details about a specific webhook subscription including last error info',
     {
@@ -44,7 +47,8 @@ export function registerWebhookTools(server: McpServer, client: BeaconedClient):
   );
 
   // beaconed_webhooks_events
-  server.tool(
+  registerTool(
+    server,
     'beaconed_webhooks_events',
     'GET /api/v1/webhooks/events — fetch the global catalog of all available webhook event types',
     paginationSchema,

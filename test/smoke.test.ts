@@ -75,7 +75,14 @@ async function callTool(
   args: Record<string, unknown> = {},
 ) {
   // Access the internal map — acceptable for test-harness use.
-  const tools = (server as unknown as { _registeredTools: Record<string, { handler: (args: Record<string, unknown>) => Promise<unknown> }> })._registeredTools;
+  const tools = (
+    server as unknown as {
+      _registeredTools: Record<
+        string,
+        { handler: (args: Record<string, unknown>) => Promise<unknown> }
+      >;
+    }
+  )._registeredTools;
   const tool = tools[name];
   if (!tool) throw new Error(`Tool "${name}" not registered`);
   return tool.handler(args);
@@ -130,7 +137,14 @@ const SETTINGS = {
 };
 
 const WEBHOOK_LIST_RESPONSE = {
-  data: [{ id: 'wh-1', url: 'https://example.com/webhook', events: ['product.scored'], status: 'active' }],
+  data: [
+    {
+      id: 'wh-1',
+      url: 'https://example.com/webhook',
+      events: ['product.scored'],
+      status: 'active',
+    },
+  ],
   pageInfo: { page: 1, perPage: 20, total: 1, totalPages: 1 },
 };
 
@@ -170,7 +184,9 @@ describe('beaconed_products_list', () => {
 describe('beaconed_products_get', () => {
   it('calls client.products.get with the id and returns product detail', async () => {
     const client = makeClient();
-    vi.mocked(client.products.get).mockResolvedValue(PRODUCT_DETAIL as ReturnType<typeof client.products.get> extends Promise<infer T> ? T : never);
+    vi.mocked(client.products.get).mockResolvedValue(
+      PRODUCT_DETAIL as ReturnType<typeof client.products.get> extends Promise<infer T> ? T : never,
+    );
     const server = createServer(client);
     const result = await callTool(server, 'beaconed_products_get', { id: 'prod-1' });
     expect(client.products.get).toHaveBeenCalledWith('prod-1');
@@ -181,12 +197,18 @@ describe('beaconed_products_get', () => {
   it('returns isError:true with a Not Found message on 404', async () => {
     const client = makeClient();
     vi.mocked(client.products.get).mockRejectedValue(
-      new BeaconedNotFoundError('Product not found', 'https://beaconed.ai/api/v1/products/missing', 'GET'),
+      new BeaconedNotFoundError(
+        'Product not found',
+        'https://beaconed.ai/api/v1/products/missing',
+        'GET',
+      ),
     );
     const server = createServer(client);
     const result = await callTool(server, 'beaconed_products_get', { id: 'missing' });
     expect(result).toMatchObject({ isError: true });
-    expect((result as { content: Array<{ text: string }> }).content[0].text).toContain('Not found (404)');
+    expect((result as { content: Array<{ text: string }> }).content[0].text).toContain(
+      'Not found (404)',
+    );
   });
 
   it('returns isError:true with an auth message on 401', async () => {
@@ -197,14 +219,28 @@ describe('beaconed_products_get', () => {
     const server = createServer(client);
     const result = await callTool(server, 'beaconed_products_get', { id: 'x' });
     expect(result).toMatchObject({ isError: true });
-    expect((result as { content: Array<{ text: string }> }).content[0].text).toContain('Authentication failed');
+    expect((result as { content: Array<{ text: string }> }).content[0].text).toContain(
+      'Authentication failed',
+    );
   });
 });
 
 describe('beaconed_products_scores', () => {
   it('calls client.products.scores with id and params', async () => {
     const client = makeClient();
-    const scoresResponse = { data: [{ id: 'sc-1', overall_score: 80, grade: 'good', scored_at: '2024-01-01T00:00:00Z', score_change: null, created_at: '2024-01-01T00:00:00Z' }], pageInfo: { page: 1, perPage: 20, total: 1, totalPages: 1 } };
+    const scoresResponse = {
+      data: [
+        {
+          id: 'sc-1',
+          overall_score: 80,
+          grade: 'good',
+          scored_at: '2024-01-01T00:00:00Z',
+          score_change: null,
+          created_at: '2024-01-01T00:00:00Z',
+        },
+      ],
+      pageInfo: { page: 1, perPage: 20, total: 1, totalPages: 1 },
+    };
     vi.mocked(client.products.scores).mockResolvedValue(scoresResponse);
     const server = createServer(client);
     await callTool(server, 'beaconed_products_scores', { id: 'prod-1', since: '2024-01-01' });
@@ -237,7 +273,11 @@ describe('beaconed_optimizations_list', () => {
 describe('beaconed_optimizations_get', () => {
   it('calls client.optimizations.get with id', async () => {
     const client = makeClient();
-    vi.mocked(client.optimizations.get).mockResolvedValue(OPTIMIZATION_DETAIL as ReturnType<typeof client.optimizations.get> extends Promise<infer T> ? T : never);
+    vi.mocked(client.optimizations.get).mockResolvedValue(
+      OPTIMIZATION_DETAIL as ReturnType<typeof client.optimizations.get> extends Promise<infer T>
+        ? T
+        : never,
+    );
     const server = createServer(client);
     const result = await callTool(server, 'beaconed_optimizations_get', { id: 'opt-1' });
     expect(client.optimizations.get).toHaveBeenCalledWith('opt-1');
@@ -293,7 +333,9 @@ describe('beaconed_webhooks_list', () => {
 describe('beaconed_webhooks_get', () => {
   it('calls client.webhooks.get with id', async () => {
     const client = makeClient();
-    vi.mocked(client.webhooks.get).mockResolvedValue(WEBHOOK_DETAIL as ReturnType<typeof client.webhooks.get> extends Promise<infer T> ? T : never);
+    vi.mocked(client.webhooks.get).mockResolvedValue(
+      WEBHOOK_DETAIL as ReturnType<typeof client.webhooks.get> extends Promise<infer T> ? T : never,
+    );
     const server = createServer(client);
     const result = await callTool(server, 'beaconed_webhooks_get', { id: 'wh-1' });
     expect(client.webhooks.get).toHaveBeenCalledWith('wh-1');
@@ -318,12 +360,19 @@ describe('error mapping', () => {
   it('maps rate limit error to isError:true with retry seconds', async () => {
     const client = makeClient();
     vi.mocked(client.settings.get).mockRejectedValue(
-      new BeaconedRateLimitError('Too many requests', 'https://beaconed.ai/api/v1/settings', 'GET', 30),
+      new BeaconedRateLimitError(
+        'Too many requests',
+        'https://beaconed.ai/api/v1/settings',
+        'GET',
+        30,
+      ),
     );
     const server = createServer(client);
     const result = await callTool(server, 'beaconed_settings_get', {});
     expect(result).toMatchObject({ isError: true });
-    expect((result as { content: Array<{ text: string }> }).content[0].text).toContain('Retry after 30s');
+    expect((result as { content: Array<{ text: string }> }).content[0].text).toContain(
+      'Retry after 30s',
+    );
   });
 
   it('maps unexpected errors to isError:true', async () => {
@@ -332,7 +381,9 @@ describe('error mapping', () => {
     const server = createServer(client);
     const result = await callTool(server, 'beaconed_settings_get', {});
     expect(result).toMatchObject({ isError: true });
-    expect((result as { content: Array<{ text: string }> }).content[0].text).toContain('Something weird');
+    expect((result as { content: Array<{ text: string }> }).content[0].text).toContain(
+      'Something weird',
+    );
   });
 });
 
@@ -343,7 +394,11 @@ describe('beaconed://products resource', () => {
     const server = createServer(client);
 
     // Access registered resources via the internal map
-    const resources = (server as unknown as { _registeredResources: Record<string, { readCallback: (uri: URL) => Promise<unknown> }> })._registeredResources;
+    const resources = (
+      server as unknown as {
+        _registeredResources: Record<string, { readCallback: (uri: URL) => Promise<unknown> }>;
+      }
+    )._registeredResources;
     const resource = resources['beaconed://products'];
     expect(resource).toBeDefined();
 
@@ -362,7 +417,11 @@ describe('beaconed://optimizations resource', () => {
     vi.mocked(client.optimizations.list).mockResolvedValue(OPTIMIZATION_LIST_RESPONSE);
     const server = createServer(client);
 
-    const resources = (server as unknown as { _registeredResources: Record<string, { readCallback: (uri: URL) => Promise<unknown> }> })._registeredResources;
+    const resources = (
+      server as unknown as {
+        _registeredResources: Record<string, { readCallback: (uri: URL) => Promise<unknown> }>;
+      }
+    )._registeredResources;
     const resource = resources['beaconed://optimizations'];
     expect(resource).toBeDefined();
 
@@ -373,7 +432,6 @@ describe('beaconed://optimizations resource', () => {
     expect(parsed.data[0].id).toBe('opt-1');
   });
 });
-
 
 describe('tool discovery effects', () => {
   it('preserves all 26 tools and exposes complete effect annotations', async () => {
@@ -387,6 +445,7 @@ describe('tool discovery effects', () => {
       expect(tools).toHaveLength(26);
       expect(tools.filter((tool) => tool.annotations?.readOnlyHint)).toHaveLength(12);
       for (const tool of tools) {
+        expect(tool.title).toMatch(/\S/);
         expect(typeof tool.annotations?.readOnlyHint).toBe('boolean');
         expect(typeof tool.annotations?.destructiveHint).toBe('boolean');
         expect(typeof tool.annotations?.idempotentHint).toBe('boolean');
@@ -395,8 +454,12 @@ describe('tool discovery effects', () => {
       const approve = tools.find((tool) => tool.name === 'beaconed_optimizations_approve');
       expect(approve?.description).toMatch(/auto.push/);
       expect(approve?.annotations?.destructiveHint).toBe(true);
-      expect(tools.find((tool) => tool.name === 'beaconed_products_sync')?.description).toMatch(/all products/);
-      expect(tools.find((tool) => tool.name === 'beaconed_products_optimize')?.description).toMatch(/credits/);
+      expect(tools.find((tool) => tool.name === 'beaconed_products_sync')?.description).toMatch(
+        /all products/,
+      );
+      expect(tools.find((tool) => tool.name === 'beaconed_products_optimize')?.description).toMatch(
+        /credits/,
+      );
     } finally {
       await client.close();
       await server.close();

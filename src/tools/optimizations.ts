@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { BeaconedClient } from '@beaconed/api-client';
 import { formatError } from '../error-utils.js';
+import { registerTool } from './register-tool.js';
 
 const paginationSchema = {
   page: z.number().int().positive().optional().describe('Page number (1-based)'),
@@ -30,7 +31,8 @@ const fieldSchema = z
 
 export function registerOptimizationTools(server: McpServer, client: BeaconedClient): void {
   // beaconed_optimizations_list
-  server.tool(
+  registerTool(
+    server,
     'beaconed_optimizations_list',
     'GET /api/v1/optimizations — list AI-generated optimizations with optional filters for status, field, product, and date',
     {
@@ -38,7 +40,10 @@ export function registerOptimizationTools(server: McpServer, client: BeaconedCli
       status: statusSchema,
       field: fieldSchema,
       product_id: z.string().optional().describe('Filter to a specific product UUID'),
-      since: z.string().optional().describe('ISO 8601 date — only optimizations created on or after this date'),
+      since: z
+        .string()
+        .optional()
+        .describe('ISO 8601 date — only optimizations created on or after this date'),
     },
     { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     async (params) => {
@@ -52,7 +57,8 @@ export function registerOptimizationTools(server: McpServer, client: BeaconedCli
   );
 
   // beaconed_optimizations_get
-  server.tool(
+  registerTool(
+    server,
     'beaconed_optimizations_get',
     'GET /api/v1/optimizations/{id} — fetch full optimization detail including original and optimized content',
     {
