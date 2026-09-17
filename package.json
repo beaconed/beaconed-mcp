@@ -45,7 +45,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "dev": "tsx src/server.ts"
+    "dev": "tsx src/server.ts",
+    "start:remote": "node dist/remote/server.js"
   },
   "dependencies": {
     "@beaconed/api-client": "github:beaconed/beaconed-api-client#43439ae7d80770ba6ce9fc85f78f1242fa7311dd",
