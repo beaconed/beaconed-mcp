@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { BeaconedClient } from '@beaconed/api-client';
 import { formatError } from '../error-utils.js';
+import { registerTool } from './register-tool.js';
 
 const webhookEventEnum = z.enum([
   'optimization.created',
@@ -15,7 +16,8 @@ const webhookEventEnum = z.enum([
 
 export function registerWebhookMutationTools(server: McpServer, client: BeaconedClient): void {
   // beaconed_webhooks_create
-  server.tool(
+  registerTool(
+    server,
     'beaconed_webhooks_create',
     'POST /api/v1/webhooks — create a new webhook subscription. The signing secret is returned only once — store it securely.',
     {
@@ -41,14 +43,18 @@ export function registerWebhookMutationTools(server: McpServer, client: Beaconed
   );
 
   // beaconed_webhooks_update
-  server.tool(
+  registerTool(
+    server,
     'beaconed_webhooks_update',
-    'PATCH /api/v1/webhooks/{id} — update a webhook subscription\'s URL, events, or status.',
+    "PATCH /api/v1/webhooks/{id} — update a webhook subscription's URL, events, or status.",
     {
       id: z.string().describe('Webhook UUID'),
       url: z.string().url().optional().describe('New HTTPS delivery URL'),
       events: z.array(z.string()).optional().describe('New list of subscribed events'),
-      status: z.enum(['active', 'paused']).optional().describe('Set to paused to temporarily disable deliveries'),
+      status: z
+        .enum(['active', 'paused'])
+        .optional()
+        .describe('Set to paused to temporarily disable deliveries'),
     },
     { readOnlyHint: false, openWorldHint: true, destructiveHint: true, idempotentHint: true },
     async ({ id, ...input }) => {
@@ -62,7 +68,8 @@ export function registerWebhookMutationTools(server: McpServer, client: Beaconed
   );
 
   // beaconed_webhooks_delete
-  server.tool(
+  registerTool(
+    server,
     'beaconed_webhooks_delete',
     'DELETE /api/v1/webhooks/{id} — permanently remove a webhook subscription. DESTRUCTIVE: webhook deliveries stop immediately.',
     {
@@ -80,7 +87,8 @@ export function registerWebhookMutationTools(server: McpServer, client: Beaconed
   );
 
   // beaconed_webhooks_test
-  server.tool(
+  registerTool(
+    server,
     'beaconed_webhooks_test',
     'POST /api/v1/webhooks/{id}/test — send a test event to a webhook to verify delivery is working.',
     {

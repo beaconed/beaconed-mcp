@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { BeaconedClient } from '@beaconed/api-client';
 import { formatError } from '../error-utils.js';
+import { registerTool } from './register-tool.js';
 
 const fieldEnum = z.enum([
   'title',
@@ -37,13 +38,17 @@ const productInputSchema = {
   og_title: z.string().optional().describe('Open Graph title for social media'),
   og_description: z.string().optional().describe('Open Graph description for social media'),
   tags: z.string().optional().describe('Comma-separated product tags'),
-  external_id: z.string().optional().describe('Your system product ID — used for idempotency on create'),
+  external_id: z
+    .string()
+    .optional()
+    .describe('Your system product ID — used for idempotency on create'),
   images: z.array(imageSchema).optional().describe('Product images'),
 };
 
 export function registerProductMutationTools(server: McpServer, client: BeaconedClient): void {
   // beaconed_products_create
-  server.tool(
+  registerTool(
+    server,
     'beaconed_products_create',
     'POST /api/v1/products — create a product from external (non-Shopify) data. Use external_id for idempotency.',
     productInputSchema,
@@ -59,9 +64,10 @@ export function registerProductMutationTools(server: McpServer, client: Beaconed
   );
 
   // beaconed_products_update
-  server.tool(
+  registerTool(
+    server,
     'beaconed_products_update',
-    'PATCH /api/v1/products/{id} — update a product\'s fields. Only include fields you want to change.',
+    "PATCH /api/v1/products/{id} — update a product's fields. Only include fields you want to change.",
     {
       id: z.string().describe('Product UUID'),
       ...productInputSchema,
@@ -78,9 +84,10 @@ export function registerProductMutationTools(server: McpServer, client: Beaconed
   );
 
   // beaconed_products_sync
-  server.tool(
+  registerTool(
+    server,
     'beaconed_products_sync',
-    'POST /api/v1/products/{id}/sync — refresh all products in the selected product\'s shop from Shopify (queued, 202). Rate limit: 10 requests/min.',
+    "POST /api/v1/products/{id}/sync — refresh all products in the selected product's shop from Shopify (queued, 202). Rate limit: 10 requests/min.",
     {
       id: z.string().describe('Product UUID'),
     },
@@ -96,7 +103,8 @@ export function registerProductMutationTools(server: McpServer, client: Beaconed
   );
 
   // beaconed_products_optimize
-  server.tool(
+  registerTool(
+    server,
     'beaconed_products_optimize',
     'POST /api/v1/products/{id}/optimization — queue AI optimization for one or more product fields using account credits (queued, 202). Rate limit: 10 requests/min.',
     {
@@ -119,7 +127,8 @@ export function registerProductMutationTools(server: McpServer, client: Beaconed
   );
 
   // beaconed_products_calculate_score
-  server.tool(
+  registerTool(
+    server,
     'beaconed_products_calculate_score',
     'POST /api/v1/products/{id}/scores/calculation — recalculate the readiness score for a product. Rate limit: 10 requests/min.',
     {
